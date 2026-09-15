@@ -75,3 +75,16 @@ First-Class Mail 的最大重量是多少？
 什么情况下信件会被视为不可机器处理（nonmachinable）？
 文档中列了多条标准，如长宽比小于 1.3 或大于 2.5 等
 ```
+
+## 测试脚本
+
+按顺序运行，从底层到上层验证 RAG 流程：
+
+```bash
+npx tsx test_retrieval.ts   # 1. 向量检索 — 检查相关块是否排前
+npx tsx test_query.ts       # 2. Query Engine — 检查 LLM 回答是否正确
+npx tsx test_tool.ts        # 3. Agent 工具 — 检查工具返回内容
+npx tsx test_agent.ts       # 4. Agent 完整流程 — 检查最终回答
+```
+
+> 终端中文可能显示为乱码（GBK 编码问题），实际内容正确。

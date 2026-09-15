@@ -1,19 +1,24 @@
 import { SimpleDirectoryReader } from "@llamaindex/readers/directory";
 import "dotenv/config";
-import { storageContextFromDefaults, VectorStoreIndex } from "llamaindex";
+import { SentenceSplitter, storageContextFromDefaults, VectorStoreIndex } from "llamaindex";
 import { initSettings } from "./app/settings";
 
 async function generateDatasource() {
   console.log(`Generating storage context...`);
-  // Split documents, create embeddings and store them in the storage context
   const storageContext = await storageContextFromDefaults({
     persistDir: "storage",
   });
-  // load documents from current directory into an index
   const reader = new SimpleDirectoryReader();
   const documents = await reader.loadData("data");
 
-  await VectorStoreIndex.fromDocuments(documents, {
+  // Manually split documents into smaller chunks for better retrieval
+  const splitter = new SentenceSplitter({ chunkSize: 256, chunkOverlap: 20 });
+  (splitter as any).tokenSize = (text: string) => Math.ceil(text.length / 4);
+  const nodes = splitter.getNodesFromDocuments(documents);
+  console.log(`Split ${documents.length} documents into ${nodes.length} chunks.`);
+
+  await VectorStoreIndex.init({
+    nodes,
     storageContext,
   });
   console.log("Storage context successfully generated.");
