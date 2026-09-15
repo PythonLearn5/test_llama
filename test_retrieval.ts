@@ -9,8 +9,8 @@ async function test() {
 
   const queries = [
     "What are the minimum size requirements for letters?",
-    "信件的最小尺寸是多少",
-    "包裹的最大重量是多少",
+    //"信件的最小尺寸是多少",
+    //"包裹的最大重量是多少",
   ];
 
   for (const query of queries) {

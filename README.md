@@ -62,19 +62,41 @@ npm run eject
 
 ## 测试问题
 
+### USPS 邮政手册（101.pdf）
+
 ```
 信件的最小尺寸是多少？
-文档中的答案：不小于 5 英寸长、3.5 英寸高、0.007 英寸厚
+答案：不小于 5 英寸长、3.5 英寸高、0.007 英寸厚
 
 First-Class Mail 的最大重量是多少？
-文档中的答案：不超过 13 盎司
+答案：不超过 13 盎司
 
 包裹的最大重量限制是多少？
-文档中的答案：不超过 70 磅
-
-什么情况下信件会被视为不可机器处理（nonmachinable）？
-文档中列了多条标准，如长宽比小于 1.3 或大于 2.5 等
+答案：不超过 70 磅
 ```
+
+### Attention Is All You Need（attention is all you need.pdf）
+
+#### 表格输出测试
+
+```
+What are the BLEU scores of the Transformer model on WMT 2014 English-to-German and English-to-French? Format as a table.
+```
+
+> LLM 会输出格式化的 Markdown 表格，包含 Transformer (Base) 和 (Big) 的 BLEU 分数。
+
+#### 图片输出测试
+
+```
+What is the Transformer architecture? Show the architecture figure from the paper.
+```
+
+> LLM 会在回答中包含 Markdown 图片语法 `![Figure 1](http://localhost:3001/pdf-images/attention_is_all_you_need_page_3_fig_1.png)`，
+> 聊天界面会渲染显示对应的插图。
+>
+> 图片提取采用混合策略（`npm run generate` 时自动执行）：
+> - 优先提取 PDF 中嵌入的栅格图片（照片、插图等）
+> - 对于矢量绘制的插图（如论文中的架构图），检测页面文本中的 "Figure" 引用，渲染该页为 PNG
 
 ## 测试脚本
 
