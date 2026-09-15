@@ -5,24 +5,27 @@
     "generate": "tsx src/generate.ts datasource",
     "generate:datasource": "tsx src/generate.ts datasource",
     "generate:ui": "tsx src/generate.ts ui",
+    "predev": "node scripts/kill-port.js",
     "dev": "nodemon",
     "start": "tsx src/index.ts",
     "eject": "llamaindex-server eject"
   },
   "dependencies": {
     "@llamaindex/openai": "~0.4.0",
+    "@llamaindex/readers": "~3.1.4",
     "@llamaindex/server": "~0.2.1",
-    "@llamaindex/workflow": "~1.1.8",
     "@llamaindex/tools": "~0.1.2",
-    "llamaindex": "~0.11.0",
+    "@llamaindex/workflow": "~1.1.8",
     "dotenv": "^16.4.7",
-    "zod": "^3.23.8",
-    "@llamaindex/readers": "~3.1.4"
+    "llamaindex": "~0.11.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "^20.10.3",
+    "nodemon": "^3.1.10",
     "tsx": "4.7.2",
-    "typescript": "^5.3.2",
-    "nodemon": "^3.1.10"
+    "typescript": "^5.3.2"
   }
 }

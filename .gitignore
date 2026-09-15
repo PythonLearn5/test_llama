@@ -38,3 +38,4 @@ output/
 storage/
 
 .env
+/.idea/

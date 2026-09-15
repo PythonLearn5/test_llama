@@ -1,39 +1,39 @@
-This is a [LlamaIndex](https://www.llamaindex.ai/) project bootstrapped with [`create-llama`](https://github.com/run-llama/LlamaIndexTS/tree/main/packages/create-llama).
+这是一个基于 [LlamaIndex](https://www.llamaindex.ai/) 的项目，使用 [`create-llama`](https://github.com/run-llama/LlamaIndexTS/tree/main/packages/create-llama) 脚手架创建。
 
-## Getting Started
+## 快速开始
 
-First, install the dependencies:
+首先，安装依赖：
 
 ```
 npm install
 ```
 
-Then check the parameters that have been pre-configured in the `.env` file in this directory.
-Make sure you have set the `OPENAI_API_KEY` for the LLM.
+然后检查本目录下 `.env` 文件中预配置的参数。
+请确保已设置 Vercel AI Gateway 的 `AI_GATEWAY_API_KEY`。
 
-Second, generate the embeddings of the example documents in the `./data` directory:
+其次，为 `./data` 目录中的示例文档生成嵌入向量：
 
 ```
 npm run generate
 ```
 
-Third, run the development server:
+最后，启动开发服务器：
 
 ```
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the chat UI.
+在浏览器中打开 [http://localhost:3000](http://localhost:3000) 即可查看聊天界面。
 
-## Configure LLM and Embedding Model
+## 配置 LLM 和嵌入模型
 
-You can configure [LLM model](https://ts.llamaindex.ai/docs/llamaindex/modules/llms) and [embedding model](https://ts.llamaindex.ai/docs/llamaindex/modules/embeddings) in the [settings file](src/app/settings.ts).
+你可以在[设置文件](src/app/settings.ts)中配置 [LLM 模型](https://ts.llamaindex.ai/docs/llamaindex/modules/llms)和[嵌入模型](https://ts.llamaindex.ai/docs/llamaindex/modules/embeddings)。
 
-## Use Case
+## 使用场景
 
-We have prepared an [example workflow](./src/app/workflow.ts) for the agentic RAG use case, where you can ask questions about the example documents in the [./data](./data) directory.
+我们准备了一个[示例工作流](./src/app/workflow.ts)，用于智能体 RAG 场景，你可以对 [./data](./data) 目录中的示例文档提问。
 
-You can start by sending an request on the [chat UI](http://localhost:3000) or you can test the `/api/chat` endpoint with the following curl request:
+你可以通过[聊天界面](http://localhost:3000)发送请求，也可以使用以下 curl 命令测试 `/api/chat` 接口：
 
 ```shell
 curl --location 'localhost:3000/api/chat' \
@@ -41,20 +41,37 @@ curl --location 'localhost:3000/api/chat' \
 --data '{ "messages": [{ "role": "user", "content": "What standards for a letter exist?" }] }'
 ```
 
-## Eject Mode
+## 弹出模式
 
-If you want to fully customize the server UI and routes, you can use `npm eject`. It will create a normal Next.js project with the same functionality as @llamaindex/server.
+如果你想完全自定义服务端界面和路由，可以使用 `npm eject`。它将创建一个具有与 @llamaindex/server 相同功能的普通 Next.js 项目。
 
 ```bash
 npm run eject
 ```
 
-## Learn More
+## 了解更多
 
-To learn more about LlamaIndex, take a look at the following resources:
+要了解更多关于 LlamaIndex 的信息，请查看以下资源：
 
-- [LlamaIndex Documentation](https://docs.llamaindex.ai) - learn about LlamaIndex (Python features).
-- [LlamaIndexTS Documentation](https://ts.llamaindex.ai/docs/llamaindex) - learn about LlamaIndex (Typescript features).
-- [Agent Workflows Introduction](https://ts.llamaindex.ai/docs/llamaindex/modules/agent_workflow) - learn about LlamaIndexTS Agent Workflows.
+- [LlamaIndex 文档](https://docs.llamaindex.ai) - 了解 LlamaIndex（Python 功能）。
+- [LlamaIndexTS 文档](https://ts.llamaindex.ai/docs/llamaindex) - 了解 LlamaIndex（TypeScript 功能）。
+- [Agent Workflows 简介](https://ts.llamaindex.ai/docs/llamaindex/modules/agent_workflow) - 了解 LlamaIndexTS Agent Workflows。
 
-You can check out [the LlamaIndexTS GitHub repository](https://github.com/run-llama/LlamaIndexTS) - your feedback and contributions are welcome!
+欢迎查看 [LlamaIndexTS GitHub 仓库](https://github.com/run-llama/LlamaIndexTS) - 期待你的反馈和贡献！
+
+
+## 测试问题
+
+```
+信件的最小尺寸是多少？
+文档中的答案：不小于 5 英寸长、3.5 英寸高、0.007 英寸厚
+
+First-Class Mail 的最大重量是多少？
+文档中的答案：不超过 13 盎司
+
+包裹的最大重量限制是多少？
+文档中的答案：不超过 70 磅
+
+什么情况下信件会被视为不可机器处理（nonmachinable）？
+文档中列了多条标准，如长宽比小于 1.3 或大于 2.5 等
+```
