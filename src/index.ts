@@ -39,5 +39,11 @@ new LlamaIndexServer({
   uiConfig: {
     componentsDir: "components",
     devMode: true,
+    starterQuestions: [
+      "信件的最小尺寸是多少？",
+      "What are the BLEU scores of the Transformer on WMT 2014 EN-DE and EN-FR? Format as a table.",
+      "What is the Transformer architecture? Show the architecture figure from the paper.",
+      "Show Table 2 from the paper — compare BLEU scores of Transformer with other models in a table.",
+    ],
   },
 }).start();
