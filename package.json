@@ -1,0 +1,28 @@
+{
+  "name": "test_llama",
+  "version": "0.1.0",
+  "scripts": {
+    "generate": "tsx src/generate.ts datasource",
+    "generate:datasource": "tsx src/generate.ts datasource",
+    "generate:ui": "tsx src/generate.ts ui",
+    "dev": "nodemon",
+    "start": "tsx src/index.ts",
+    "eject": "llamaindex-server eject"
+  },
+  "dependencies": {
+    "@llamaindex/openai": "~0.4.0",
+    "@llamaindex/server": "~0.2.1",
+    "@llamaindex/workflow": "~1.1.8",
+    "@llamaindex/tools": "~0.1.2",
+    "llamaindex": "~0.11.0",
+    "dotenv": "^16.4.7",
+    "zod": "^3.23.8",
+    "@llamaindex/readers": "~3.1.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.3",
+    "tsx": "4.7.2",
+    "typescript": "^5.3.2",
+    "nodemon": "^3.1.10"
+  }
+}
