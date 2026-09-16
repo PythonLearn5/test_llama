@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
-import { createCanvas } from "@napi-rs/canvas";
+import { createCanvas, Image } from "@napi-rs/canvas";
+import { filterEmbeddedImage } from "./docx-extract";
 
 const OUTPUT_DIR = "public/pdf-images";
 const IMAGE_URL_PREFIX = "http://localhost:3001/pdf-images";
@@ -150,14 +151,18 @@ function findFigureRegions(
 /**
  * Extract images from a PDF using a hybrid strategy:
  * 1. Extract embedded raster images (photos, illustrations stored as JPEG/PNG)
+ *    — skipping any page whose textContent is known to be empty (scanned page,
+ *      its embedded raster is the whole-page image, not a reusable figure).
  * 2. For pages that mention "Figure"/"Fig." in text but have no embedded
- *    raster images, crop the figure region from a rendered page
+ *    raster images, crop the figure region from a rendered page.
  */
 export async function extractPdfImages(
   pdfPath: string,
-  namePrefix: string
+  namePrefix: string,
+  options?: { emptyPageNumbers?: number[] }
 ): Promise<Record<number, string[]>> {
   const { getDocumentProxy, getResolvedPDFJS } = await import("unpdf");
+  const emptyPages = new Set(options?.emptyPageNumbers ?? []);
 
   if (!fs.existsSync(OUTPUT_DIR)) {
     fs.mkdirSync(OUTPUT_DIR, { recursive: true });
@@ -202,6 +207,14 @@ export async function extractPdfImages(
     if (operatorList) {
       for (let j = 0; j < operatorList.fnArray.length; j++) {
         if (operatorList.fnArray[j] !== OPS.paintImageXObject) continue;
+
+        // On a page that SimpleDirectoryReader returned empty text (i.e. a
+        // scanned/image-only page), any embedded raster image is almost
+        // certainly the whole-page scan raster, not an actual figure — skip.
+        if (emptyPages.has(i)) {
+          continue;
+        }
+
         const key = operatorList.argsArray[j][0];
 
         let image: any;
@@ -219,6 +232,17 @@ export async function extractPdfImages(
 
         imgIdx++;
         const buf = rawToPng(imgData, width, height, channels);
+
+        // Filter out screenshots / tiny icons using the same pixel analyzer
+        const filter = filterEmbeddedImage(buf);
+        if (!filter.keep) {
+          console.log(
+            `  Embedded skip page ${i} #${imgIdx + 0} (${width}x${height}, category=${filter.category}): ${filter.reason}`
+          );
+          imgIdx--;
+          continue;
+        }
+
         const fileName = `${namePrefix}_page_${i}_fig_${imgIdx}.png`;
         fs.writeFileSync(path.join(OUTPUT_DIR, fileName), buf);
         urls.push(`${IMAGE_URL_PREFIX}/${fileName}`);

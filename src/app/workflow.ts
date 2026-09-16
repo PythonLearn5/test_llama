@@ -8,7 +8,7 @@ export const workflowFactory = async (reqBody: any) => {
     options: { similarityTopK: 5 },
     metadata: {
       name: "query_document",
-      description: `This tool can retrieve information from documents in the knowledge base, including USPS Domestic Mail Manual and the Attention Is All You Need paper`,
+      description: `This tool can retrieve information from documents in the knowledge base, including USPS Domestic Mail Manual, the Attention Is All You Need paper, and Word documents`,
     },
   });
 

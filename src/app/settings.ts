@@ -21,11 +21,13 @@ export function initSettings() {
       ? parseInt(process.env.EMBEDDING_DIM)
       : undefined,
   });
-  // Use smaller chunks so each node focuses on a single topic for better retrieval
-  // Provide a simple tokenSize function (~4 chars ≈ 1 token) since no tokenizer is installed
+  // Larger chunk size to keep structured content (Markdown tables, OCR blocks)
+  // intact within a single vector node. 800 chars (~200 tokens) is enough for
+  // most 10-row tables and figure captions. overlap is large enough that
+  // split tables still share rows between consecutive chunks.
   Settings.nodeParser = new SentenceSplitter({
-    chunkSize: 256,
-    chunkOverlap: 20,
+    chunkSize: 800,
+    chunkOverlap: 80,
   });
   (Settings.nodeParser as any).tokenSize = (text: string) => Math.ceil(text.length / 4);
 }

@@ -13,21 +13,34 @@ const IMAGE_DIR = "public/pdf-images";
 http
   .createServer((req, res) => {
     const url = decodeURIComponent(req.url || "");
-    // Only allow PNG files from the pdf-images directory
-    if (!url.startsWith("/pdf-images/") || !url.endsWith(".png")) {
+    // Only allow image files from the pdf-images directory
+    if (!url.startsWith("/pdf-images/")) {
       res.writeHead(403);
       res.end("Forbidden");
       return;
     }
     const fileName = path.basename(url);
+    const ext = path.extname(fileName).toLowerCase();
+    const validExts = [".png", ".jpg", ".jpeg", ".gif", ".bmp", ".webp"];
+    if (!validExts.includes(ext)) {
+      res.writeHead(403);
+      res.end("Forbidden");
+      return;
+    }
     const filePath = path.join(IMAGE_DIR, fileName);
     if (!fs.existsSync(filePath)) {
       res.writeHead(404);
       res.end("Not found");
       return;
     }
+    const contentType =
+      ext === ".png" ? "image/png" :
+      ext === ".jpg" || ext === ".jpeg" ? "image/jpeg" :
+      ext === ".gif" ? "image/gif" :
+      ext === ".bmp" ? "image/bmp" :
+      ext === ".webp" ? "image/webp" : "application/octet-stream";
     const buf = fs.readFileSync(filePath);
-    res.writeHead(200, { "Content-Type": "image/png" });
+    res.writeHead(200, { "Content-Type": contentType });
     res.end(buf);
   })
   .listen(3001, () => {
